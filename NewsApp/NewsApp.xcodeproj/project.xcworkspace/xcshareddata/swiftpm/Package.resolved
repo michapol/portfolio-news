@@ -1,0 +1,15 @@
+{
+  "originHash" : "f4555253aa0806a22847bb566d60426f6ba3a126048c5fa03947a73d7725c599",
+  "pins" : [
+    {
+      "identity" : "portfolio-news-package",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:michapol/portfolio-news-package.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "ec946216792a3bde4e4ed6a8e6293bbca8383149"
+      }
+    }
+  ],
+  "version" : 3
+}

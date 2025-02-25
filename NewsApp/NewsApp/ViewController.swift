@@ -6,6 +6,7 @@
 //
 
 import NewsService
+import SwiftUI
 import UIKit
 
 class ViewController: UIViewController {
@@ -25,9 +26,8 @@ class ViewController: UIViewController {
 
     private func testNewsService() async {
         let newsService = NewsService(apiKey: "<APIKEY>")
-        guard let data = try? await newsService.getHeadlines(for: .technology) else { return }
-        guard let string = String(data: data, encoding: .utf8) else { return }
+        guard let articles = try? await newsService.getHeadlines(for: .business) else { return }
 
-        print(string)
+        print(articles)
     }
 }
