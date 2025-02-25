@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		4395C89A2D6DFFC300AE427D /* NewsService in Frameworks */ = {isa = PBXBuildFile; productRef = 4395C8992D6DFFC300AE427D /* NewsService */; };
+		4395C89D2D6E017200AE427D /* NewsService in Frameworks */ = {isa = PBXBuildFile; productRef = 4395C89C2D6E017200AE427D /* NewsService */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		4395C8772D6DF72600AE427D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +70,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4395C89A2D6DFFC300AE427D /* NewsService in Frameworks */,
+				4395C89D2D6E017200AE427D /* NewsService in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +132,8 @@
 			);
 			name = NewsApp;
 			packageProductDependencies = (
+				4395C8992D6DFFC300AE427D /* NewsService */,
+				4395C89C2D6E017200AE427D /* NewsService */,
 			);
 			productName = NewsApp;
 			productReference = 4395C8602D6DF72500AE427D /* NewsApp.app */;
@@ -208,6 +217,9 @@
 			);
 			mainGroup = 4395C8572D6DF72500AE427D;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				4395C89B2D6E017200AE427D /* XCRemoteSwiftPackageReference "portfolio-news-package" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4395C8612D6DF72500AE427D /* Products */;
 			projectDirPath = "";
@@ -563,6 +575,29 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4395C89B2D6E017200AE427D /* XCRemoteSwiftPackageReference "portfolio-news-package" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:michapol/portfolio-news-package.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4395C8992D6DFFC300AE427D /* NewsService */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NewsService;
+		};
+		4395C89C2D6E017200AE427D /* NewsService */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4395C89B2D6E017200AE427D /* XCRemoteSwiftPackageReference "portfolio-news-package" */;
+			productName = NewsService;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4395C8582D6DF72500AE427D /* Project object */;
 }
