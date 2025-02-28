@@ -26,6 +26,16 @@ final class SplashScreenViewController: UIViewController {
         return label
     }()
 
+    let progressLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Downloading Headlines..."
+        label.textAlignment = .center
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 16.0, weight: .black)
+        label.alpha = 0
+        return label
+    }()
+
     // MARK: - Properties
 
     private var viewModel: SplashScreenViewModelProtocol
@@ -53,18 +63,32 @@ final class SplashScreenViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         Task { await viewModel.screenAppeared() }
+
+        UIView.animate(withDuration: 0.5, delay: 0.5) { [weak progressLabel] in
+            progressLabel?.alpha = 1
+        }
     }
 
     private func setupView() {
         view.backgroundColor = .systemTeal
-        view.addSubview(titleLabel)
 
+        view.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor)
         ])
         titleLabel.transform = CGAffineTransform(rotationAngle: .pi / 3.5)
+
+        view.addSubview(progressLabel)
+        progressLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            progressLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -64),
+            progressLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
+            progressLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16.0)
+        ])
     }
 
     // MARK: - Error Callback

@@ -6,9 +6,9 @@
 //
 
 final class MockErrorHandler {
-    var errorHandlerValues = [MockNewsAppError?]()
+    var errorHandlerValues = [Error]()
 
     func errorHandler(_ error: Error) {
-        errorHandlerValues.append(error as? MockNewsAppError)
+        errorHandlerValues.append(error)
     }
 }
