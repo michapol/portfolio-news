@@ -10,7 +10,7 @@ import UIKit
 enum SplashScreenFactory {
     static func make(coordinator: Coordinator) -> UIViewController {
         let viewModelDependencies = SplashScreenViewModel.Dependencies.default(
-            apiKey: "<API_KEY>",
+            apiKey: "<API KEY",
             coordinator: coordinator
         )
         let viewModel = SplashScreenViewModel(dependencies: viewModelDependencies)

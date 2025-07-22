@@ -29,27 +29,14 @@ extension SplashScreenViewModel: SplashScreenViewModelProtocol {
 
     func screenAppeared() async {
         let appeared: Date = .now
-        setupNewsRepository()
 
         do {
-            try await performInitialFetch()
+            try await dependencies.newsRepository.preload()
             await delayNavigation(from: appeared, for: dependencies.minimumDisplayTime)
             await dependencies.coordinator.navigate(to: .headlines, animated: true)
         } catch {
             errorHandler(error)
         }
-    }
-
-    private func setupNewsRepository() {
-        let repository = dependencies.newsRepository.init(dependencies: dependencies.newsRepositoryDependencies)
-        dependencies.newsRepository.shared = repository
-    }
-
-    private func performInitialFetch() async throws {
-        guard let repository = dependencies.newsRepository.shared else {
-            throw NewsRepositoryError.sharedInstance
-        }
-        try await repository.preload(category: .general)
     }
 
     private func delayNavigation(from start: Date, for delay: TimeInterval) async {
@@ -65,15 +52,13 @@ extension SplashScreenViewModel {
     struct Dependencies {
         let coordinator: any Coordinator
         let minimumDisplayTime: TimeInterval
-        let newsRepository: any SharedNewsRepository.Type
-        let newsRepositoryDependencies: NewsRepository.Dependencies
+        let newsRepository: any SharedNewsRepository
 
         static func `default`(apiKey: String, coordinator: any Coordinator) -> Self {
             .init(
                 coordinator: coordinator,
                 minimumDisplayTime: 3.0,
-                newsRepository: NewsRepository.self,
-                newsRepositoryDependencies: .default(apiKey: apiKey)
+                newsRepository: NewsRepository.shared
             )
         }
     }

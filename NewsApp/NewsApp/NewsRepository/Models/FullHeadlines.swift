@@ -5,34 +5,30 @@
 //  Created by Mike Pollard on 27/02/2025.
 //
 
-import Foundation
 import NewsService
+import UIKit
 
 protocol HeadlinesModel {
+    var cell: HeadlinesCell.Type { get }
     init?(article: Article)
 }
 
 struct FullHeadlines {
+    let cell: HeadlinesCell.Type = FullHeadlinesCell.self
+
     let author: String?
     let title: String
-    let description: String
+    let description: String?
     let publishedAt: Date
-    let urlToImage: URL
+    let urlToImage: URL?
 }
 
 extension FullHeadlines: HeadlinesModel {
-    init?(article: Article) {
-        guard
-            let description = article.description,
-            let urlToImage = article.urlToImage
-        else {
-            return nil
-        }
-
+    init(article: Article) {
         self.author = article.author
         self.title = article.title
-        self.description = description
+        self.description = article.description
         self.publishedAt = article.publishedAt
-        self.urlToImage = urlToImage
+        self.urlToImage = article.urlToImage
     }
 }

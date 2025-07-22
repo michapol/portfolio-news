@@ -8,38 +8,30 @@
 import NewsService
 
 protocol SharedNewsRepository {
-    static var shared: SharedNewsRepository? { get set }
-
-    init(dependencies: NewsRepository.Dependencies)
-
-    func preload(category: NewsCategory) async throws
-    func provide<T: HeadlinesModel>(for category: NewsCategory) async throws -> [T]
+    func preload() async throws
+    func provide(for category: NewsCategory, mapper: (Article) -> HeadlinesModel?) async -> [HeadlinesModel]
 }
 
 actor NewsRepository: SharedNewsRepository {
-    static var shared: SharedNewsRepository?
+    static let shared: SharedNewsRepository = NewsRepository()
 
-    private var headlines: [NewsCategory: [Article]] = [:]
+    private var articles: [NewsCategory: [Article]] = [:]
     private let dependencies: Dependencies
 
-    init(dependencies: Dependencies) {
+    init(dependencies: Dependencies = .default) {
         self.dependencies = dependencies
     }
 
-    func preload(category: NewsCategory) async throws {
-        let articles = try await dependencies.newsService.getHeadlines(for: category)
-        headlines[category] = articles
+    func preload() async throws {
+        for category in NewsCategory.allCases {
+            let articles = try await dependencies.newsService.getHeadlines(for: category)
+            self.articles[category] = articles
+        }
     }
 
-    func provide<T>(for category: NewsCategory) async throws -> [T] where T: HeadlinesModel {
-        if let articles = headlines[category] {
-            return articles.compactMap { T(article: $0) }
-        }
-
-        let articles = try await dependencies.newsService.getHeadlines(for: category)
-        headlines[category] = articles
-
-        return articles.compactMap { T(article: $0) }
+    func provide(for category: NewsCategory, mapper: (Article) -> HeadlinesModel?) -> [HeadlinesModel] {
+        guard let articles = self.articles[category] else { return [] }
+        return articles.compactMap(mapper)
     }
 }
 
@@ -47,8 +39,8 @@ extension NewsRepository {
     struct Dependencies {
         let newsService: any NewsProvider
 
-        static func `default`(apiKey: String) -> Self {
-            .init(newsService: NewsService(apiKey: apiKey))
+        static var `default`: Self {
+            .init(newsService: NewsService(apiKey: KeyStore.newsAPIKey))
         }
     }
 }
